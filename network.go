@@ -88,3 +88,33 @@ func ListenPorts() []*Listen {
 
 	return listens
 }
+
+type NetworkIO struct {
+	Name        string `json:"name" note:"网卡名称"`
+	BytesSent   uint64 `json:"bytesSent" note:"发送字节"`
+	BytesRecv   uint64 `json:"bytesRecv" note:"接收字数"`
+	PacketsSent uint64 `json:"packetsSent" note:"发送数据包"`
+	PacketsRecv uint64 `json:"packetsRecv" note:"接收数据包"`
+}
+
+func StatNetworkIOs() ([]*NetworkIO, error) {
+	items, err := net.IOCounters(true)
+	if err != nil {
+		return nil, err
+	}
+
+	results := make([]*NetworkIO, 0)
+	c := len(items)
+	for i := 0; i < c; i++ {
+		item := items[i]
+		results = append(results, &NetworkIO{
+			Name:        item.Name,
+			BytesSent:   item.BytesSent,
+			BytesRecv:   item.BytesRecv,
+			PacketsSent: item.PacketsSent,
+			PacketsRecv: item.PacketsRecv,
+		})
+	}
+
+	return results, nil
+}

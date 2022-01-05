@@ -10,8 +10,8 @@ type DiskPartition struct {
 	FsType     string `json:"fsType" note:"文件系统"`
 }
 
-func DiskPartitions() ([]*DiskPartition, error) {
-	ps, err := disk.Partitions(true)
+func DiskPartitions(all bool) ([]*DiskPartition, error) {
+	ps, err := disk.Partitions(all)
 	if err != nil {
 		return nil, err
 	}
