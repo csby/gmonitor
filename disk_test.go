@@ -5,7 +5,7 @@ import (
 )
 
 func TestDiskPartitions(t *testing.T) {
-	ps, err := DiskPartitions()
+	ps, err := DiskPartitions(true)
 	if err != nil {
 		t.Error(err)
 		return
