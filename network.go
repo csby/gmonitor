@@ -48,6 +48,7 @@ type Listen struct {
 	Address  string `json:"address" note:"地址"`
 	Port     int    `json:"port" note:"端口"`
 	Protocol string `json:"protocol" note:"协议"`
+	PId      int    `json:"pid" note:"进程ID"`
 }
 type ListenCollection []*Listen
 

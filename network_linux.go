@@ -10,7 +10,7 @@ import (
 
 func getTcpListenPorts(ports *ListenCollection) {
 	var stdout bytes.Buffer
-	cmd := exec.Command("ss", "-ltn")
+	cmd := exec.Command("ss", "-ltn", "-p")
 	cmd.Stdout = &stdout
 	err := cmd.Run()
 	if err != nil {
@@ -39,7 +39,7 @@ func getTcpListenPorts(ports *ListenCollection) {
 
 func getUdpListenPorts(ports *ListenCollection) {
 	var stdout bytes.Buffer
-	cmd := exec.Command("ss", "-lun")
+	cmd := exec.Command("ss", "-lun", "-p")
 	cmd.Stdout = &stdout
 	err := cmd.Run()
 	if err != nil {
@@ -90,9 +90,33 @@ func parseListenPort(line string) *Listen {
 		return nil
 	}
 
+	pid := 0
+	if len(fields) > 5 {
+		//  users:(("sshd",pid=4128,fd=3))
+		pidInfo := fields[5]
+		pos = strings.LastIndex(pidInfo, "pid=")
+		if pos >= 0 {
+
+			for _, pidField := range strings.Split(pidInfo, ",") {
+				pidFieldVal := strings.TrimSpace(pidField)
+				if len(pidFieldVal) < 5 {
+					continue
+				}
+				if strings.LastIndex(pidFieldVal, "pid=") == 0 {
+					pidNumber := strings.ReplaceAll(pidFieldVal, "pid=", "")
+					pidVal, pe := strconv.Atoi(pidNumber)
+					if pe == nil {
+						pid = pidVal
+					}
+				}
+			}
+		}
+	}
+
 	listen := &Listen{
 		Address: ip,
 		Port:    portVal,
+		PId:     pid,
 	}
 
 	return listen

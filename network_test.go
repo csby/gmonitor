@@ -25,7 +25,16 @@ func TestTcpListenPorts(t *testing.T) {
 
 	for i := 0; i < count; i++ {
 		item := ports[i]
-		t.Logf("%3d %18s:%-6d %s", i+1, item.Address, item.Port, item.Protocol)
+		t.Logf("%3d %18s:%-6d %s %-6d", i+1, item.Address, item.Port, item.Protocol, item.PId)
+		if item.PId > 0 {
+			p, e := GetProcessInfo(item.PId)
+			if e != nil {
+				t.Log("get process info fail: ", e)
+			} else {
+				t.Log("process-name: ", p.Name)
+				t.Log("process-exe:  ", p.Exe)
+			}
+		}
 	}
 }
 
@@ -36,7 +45,7 @@ func TestUdpListenPorts(t *testing.T) {
 
 	for i := 0; i < count; i++ {
 		item := ports[i]
-		t.Logf("%3d %18s:%-6d %s", i+1, item.Address, item.Port, item.Protocol)
+		t.Logf("%3d %18s:%-6d %s %-6d", i+1, item.Address, item.Port, item.Protocol, item.PId)
 	}
 }
 
@@ -47,7 +56,7 @@ func TestListenPorts(t *testing.T) {
 
 	for i := 0; i < count; i++ {
 		item := ports[i]
-		t.Logf("%3d %18s:%-6d %s", i+1, item.Address, item.Port, item.Protocol)
+		t.Logf("%3d %18s:%-6d %s %-6d", i+1, item.Address, item.Port, item.Protocol, item.PId)
 	}
 }
 
