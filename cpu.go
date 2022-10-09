@@ -2,7 +2,7 @@ package gmonitor
 
 import (
 	"fmt"
-	"github.com/shirou/gopsutil/v3/cpu"
+	"github.com/shirou/gopsutil/cpu"
 )
 
 func CpuName() (string, error) {

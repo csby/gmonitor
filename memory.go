@@ -1,6 +1,6 @@
 package gmonitor
 
-import "github.com/shirou/gopsutil/v3/mem"
+import "github.com/shirou/gopsutil/mem"
 
 type Memory struct {
 	Total         uint64  `json:"total"`

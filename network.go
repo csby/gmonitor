@@ -1,7 +1,7 @@
 package gmonitor
 
 import (
-	"github.com/shirou/gopsutil/v3/net"
+	"github.com/shirou/gopsutil/net"
 	"sort"
 	"strings"
 )
